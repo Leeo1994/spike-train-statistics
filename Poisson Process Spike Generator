@@ -1,0 +1,78 @@
+#POISSON PROCESS DISTRIBUTION BASED SPIKE GENERATOR
+
+# Poisson distribution - memoryless (doesnt depend on past events) time dependent series of event.
+# Chance of an event depends on rate λ(t).
+# Chance for an event to occur in a deltat timeframe = deltat * λ(t)
+# Fishing in a pond - chances diminish from successful fishing iteration to the other - not poisson
+# Fishing in the sea - chances remain the same between iterations - poisson
+# Homogenous poisson - rate λ is constant --> If theres a refractory period the rate is not constant in time
+# Inhomogenous poisson process - has refractory period --> time varying (varying rate)
+# For homogenous poisson --> the distribution of the inter-event(inter-spike) intervals is an exponential distribution: p(t) = lambda / e^(lambdat)
+# Fano factor measures variability of dataset: F = Variance / Avg in homogenous = 1
+# Coefficient of variation usually applied to ISI: Cv = Variance / Avg in homogenous = 1
+
+import numpy as np
+import math
+
+spikes = [] #array to store spikes
+isi = [] #array to store isi
+fire_rate = 35 #(λ) constant for homogenous
+total_time = 100
+time_bin = 10 #time bin length
+nBins = int(total_time / time_bin)
+dur_refract = 0.005 #refractory period[ms]
+
+if dur_refract == 0
+print("Homogeneous")
+
+#Average time between spikes
+avg_isi = 1 / fire_rate
+
+#Generates rand num of spikes for each bin based on poisson distribution
+nSpikes = np.random.poisson(fire_rate * time_bin, nBins) #(k)
+
+#How many spikes in total did we generate? based numbers based on the distribution 
+total_spikes = np.cumsum(nSpikes)
+
+#Number of ISIs
+nIsis = total_spikes - 1
+
+#Generates rand interspike durations based on exponential isi distribution (p(t))
+isi_dur = np.random.exponential(avg_isi, nIsis)
+
+#Calc spike times
+spike_times = np.cumsum(nSpikes * time_bin)
+
+#Calc average spike number
+avg_nSpikes = np.mean(nSpikes)
+
+#Calc spike-number variance = spike number fluctuation across all bins
+var_nSpikes = np.var(nSpikes) 
+
+#In the case of the Fano factor the spike count should be performed over
+#windows of width 10 ms, 50 ms and 100 ms.
+#Fano Factor - measures how regular a neuron's spiking is. 
+#fano > 1 indicates for additional processes that cause neuron firing rate to vary over time
+fano = var_nSpikes / avg_nSpikes 
+
+#Calc isi time-variance 
+var_isi = np.diff(spike_times)
+
+#Coefficient of variation - distribution of time between spikes
+cv = var_isi / avg_isi
+
+#------plot------
+
+else
+
+print("Inhomogeneous")
+
+#Modified fire rate per bin based on refractory period.
+rate_bin_mod = (fire_rate * time_bin) / (1 + fire_rate * dur_refract)
+
+avg_isi_mod = 1 / fire_rate #supposed to be influenced by refractory period
+
+#Generates rand num of spikes for each bin based on poisson distribution
+nSpikes = np.random.poisson(rate_bin_mod, nBins) #(k)
+
+isi_dur = np.random.exponential(avg_isi_mod, nIsis)
