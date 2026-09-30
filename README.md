@@ -1,6 +1,6 @@
 # Spike Train Statistics
 
-Computational Neuroscience coursework (Python). Simulations and analysis of neuronal spike trains using Poisson processes and leaky integrate-and-fire (LIF) neurons.
+University of Bristol Computational Neuroscience coursework (Python). Simulations and analysis of neuronal spike trains using Poisson processes and leaky integrate-and-fire (LIF) neurons.
 
 ## Features
 - Homogeneous and inhomogeneous (refractory period) Poisson spike generators
